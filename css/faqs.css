@@ -1,0 +1,96 @@
+  :root{
+    --bg: #0f172a;         /* slate-900 */
+    --card: #111827;       /* gray-900 */
+    --border: #1f2937;     /* gray-800 */
+    --text: #e5e7eb;       /* gray-200 */
+    --muted: #94a3b8;      /* slate-400 */
+    --accent: #38bdf8;     /* sky-400 */
+    --radius: 16px;
+  }
+
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#f8fafc; --card:#ffffff; --border:#e5e7eb; --text:#0f172a; --muted:#475569; --accent:#0ea5e9;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body{
+    margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(56,189,248,.15), transparent 60%), var(--bg);
+    color: var(--text);
+  }
+
+  .faq{
+    max-width: 900px; margin: 64px auto; padding: 0 20px;
+  }
+  .faq-header{
+    text-align:center; margin-bottom: 28px;
+  }
+  .faq-header h2{
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin: 0 0 10px;
+  }
+  .faq-header p{ color: var(--muted); margin: 0; }
+
+  .faq-list{
+    display: grid; gap: 14px;
+  }
+
+  details{
+    background: linear-gradient(180deg, var(--card), color-mix(in oklab, var(--card), black 2%));
+    border: 1px solid var(--border); border-radius: var(--radius); overflow: clip;
+    transition: border-color .2s ease, transform .1s ease;
+  }
+  details:focus-within{ border-color: color-mix(in oklab, var(--accent), white 20%); }
+  details[open]{ transform: translateY(-1px); }
+
+  summary{
+    list-style: none; cursor: pointer; display:flex; align-items:center; gap: 12px;
+    padding: 18px 20px; font-weight: 600; position: relative; outline: none;
+  }
+  /* Hide default marker */
+  summary::-webkit-details-marker { display: none; }
+  /* Custom icon */
+  summary::before{
+    content: ""; width: 22px; height: 22px; border-radius: 8px; flex: 0 0 22px;
+    border: 2px solid var(--border); position: relative;
+  }
+  summary::after{
+    /* plus/minus icon built in CSS */
+    content: ""; width: 10px; height: 2px; position: absolute; right: 20px;
+    background: var(--text); border-radius: 2px; transform-origin: center; transition: transform .2s ease;
+  }
+  summary::before,
+  summary::after{ pointer-events: none; }
+
+  /* vertical bar for plus */
+  summary:has(+ .content)::before{
+    box-shadow:
+      0 0 0 0 var(--accent) inset;
+  }
+  /* add vertical stroke for + using a pseudo element on the content wrapper */
+  details:not([open]) summary::after{
+    box-shadow: 0 0 0 0 transparent;
+  }
+  /* Draw the vertical line for + using a separate element */
+  summary span.icon{
+    position:absolute; right:20px; width:2px; height:10px; background: var(--text);
+    border-radius:2px; transform: translateY(-1px);
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  details[open] summary span.icon{ transform: scaleY(0); opacity: 0; }
+
+  .content{
+    padding: 0 20px 18px 20px; color: var(--muted); line-height: 1.65;
+    display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease;
+  }
+  details[open] .content{ grid-template-rows: 1fr; }
+  .content > div{ overflow: hidden; }
+
+  /* Links inside answers */
+  .content a{ color: var(--accent); text-decoration: none; border-bottom: 1px dashed color-mix(in oklab, var(--accent), transparent 60%); }
+  .content a:hover{ border-bottom-style: solid; }
+
+  @media (prefers-reduced-motion: reduce){
+    .content, details{ transition: none !important; }
+  }
